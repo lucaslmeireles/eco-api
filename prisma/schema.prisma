@@ -39,3 +39,14 @@ model Bookmark {
 
     @@map("bookmarks")
 }
+
+
+model Posts {
+    id Int @id @default(autoincrement())
+    title String
+    small_text String?
+    cover_img String?
+    content String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
