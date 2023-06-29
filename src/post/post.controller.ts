@@ -1,6 +1,14 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    ParseIntPipe,
+    Patch,
+    Post,
+} from '@nestjs/common';
 import { PostService } from './post.service';
-import { DatabaseService } from 'src/database/database.service';
+import { CreatePostDto, EditPostDto } from './dto';
 
 @Controller('post')
 export class PostController {
@@ -11,5 +19,21 @@ export class PostController {
         return this.PostService.listPosts();
     }
 
-    async listOnePost(@Body() id);
+    @Get(':id')
+    listOnePost(@Param('id', ParseIntPipe) postId: number) {
+        return this.PostService.listPostById(postId);
+    }
+
+    @Post('/create')
+    createPost(@Body() dto: CreatePostDto) {
+        return this.PostService.createPost(dto);
+    }
+
+    @Patch(':id')
+    editPost(
+        @Param('id', ParseIntPipe) postId: number,
+        @Body() dto: EditPostDto,
+    ) {
+        return this.PostService.editPost(postId, dto);
+    }
 }

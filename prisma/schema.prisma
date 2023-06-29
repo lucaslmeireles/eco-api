@@ -21,6 +21,7 @@ model User {
     firstName String?
     lastName  String?
     bookmarks Bookmark[]
+    posts Posts[]
 
     @@map("users")
 }
@@ -49,4 +50,7 @@ model Posts {
     content String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    userId Int @default(1)
+    user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
 }
