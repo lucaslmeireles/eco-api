@@ -18,17 +18,22 @@ export class PostService {
         });
         return post;
     }
-    async createPost(dto: CreatePostDto) {
+    async createPost(dto: CreatePostDto, userId: number) {
         //TODO apenas o user aunteticado pode criar um post, @UseGuard aqui
-        return await this.prisma.posts.create({
+        const post = await this.prisma.posts.create({
             data: {
+                authorId: userId,
                 ...dto,
             },
         });
+        return post;
     }
 
     async editPost(postId: number, dto: EditPostDto) {
         //TODO apenas o user dono desse post pode edita-lo, @UseGuard + verificação do userId
+        if (!dto.title && !dto.content) {
+            throw new Error('Nenhum campo foi preenchido');
+        }
         return await this.prisma.posts.update({
             where: {
                 id: postId,

@@ -20,37 +20,32 @@ model User {
 
     firstName String?
     lastName  String?
-    bookmarks Bookmark[]
-    posts Posts[]
+    posts     Posts[]
+    Comment   Comment[]
 
     @@map("users")
 }
 
-model Bookmark {
-    id       Int      @id @default(autoincrement())
-    createAt DateTime @default(now())
-    updateAt DateTime @updatedAt
-
-    title       String
-    description String?
-    link        String
-
-    userId Int
-    user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@map("bookmarks")
+model Posts {
+    id         Int       @id @default(autoincrement())
+    title      String
+    small_text String?
+    cover_img  String?
+    content    String
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+    authorId   Int
+    author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    Comment    Comment[]
 }
 
-
-model Posts {
-    id Int @id @default(autoincrement())
-    title String
-    small_text String?
-    cover_img String?
-    content String
+model Comment {
+    id        Int      @id @default(autoincrement())
+    content   String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    userId Int @default(1)
-    user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+    postId    Int
+    post      Posts    @relation(fields: [postId], references: [id], onDelete: Cascade)
+    userId    Int
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

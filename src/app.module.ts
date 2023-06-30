@@ -5,9 +5,6 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
-import { BookmarkController } from './bookmark/bookmark.controller';
-import { BookmarkService } from './bookmark/bookmark.service';
-import { BookmarkModule } from './bookmark/bookmark.module';
 import { PostModule } from './post/post.module';
 
 @Module({
@@ -16,10 +13,9 @@ import { PostModule } from './post/post.module';
         UsersModule,
         DatabaseModule,
         ConfigModule.forRoot({ isGlobal: true }),
-        BookmarkModule,
         PostModule,
     ],
-    controllers: [AppController, BookmarkController],
-    providers: [AppService, BookmarkService],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}
