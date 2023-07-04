@@ -12,12 +12,16 @@ export class PostService {
         return posts;
     }
     async listPostById(postId: number) {
-        const post = this.prisma.posts.findFirst({
+        const post = await this.prisma.posts.findFirst({
             where: {
                 id: postId,
             },
+            include: {
+                author: true,
+                Comment: true,
+            },
         });
-        return post;
+        return { data: post };
     }
     async createPost(dto: CreatePostDto, userId: number) {
         //TODO apenas o user aunteticado pode criar um post, @UseGuard aqui
@@ -33,7 +37,7 @@ export class PostService {
     async editPost(postId: number, dto: EditPostDto, userId: number) {
         //TODO apenas o user dono desse post pode edita-lo, @UseGuard + verificação do userId
         const authorIdPost = await this.prisma.posts.findFirst({
-            where: { authorId: userId },
+            where: {},
         });
         if (!authorIdPost) {
             throw new Error('Você não tem permissão para editar esse post');

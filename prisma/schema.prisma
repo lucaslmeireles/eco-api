@@ -26,6 +26,9 @@ model User {
     @@map("users")
 }
 
+//tags
+// uma adm com as pricipais categorias
+//featured categories
 model Posts {
     id         Int       @id @default(autoincrement())
     title      String

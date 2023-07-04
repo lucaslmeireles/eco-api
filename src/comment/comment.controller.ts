@@ -4,6 +4,5 @@ import { CommentService } from './comment.service';
 @Controller('comment')
 export class CommentController {
     constructor(private CommentService: CommentService) {}
-
-    @Get('')
+    //Add comment and delete comment
 }
