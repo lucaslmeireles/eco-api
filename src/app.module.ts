@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { PostModule } from './post/post.module';
         DatabaseModule,
         ConfigModule.forRoot({ isGlobal: true }),
         PostModule,
+        CommentModule,
     ],
     controllers: [AppController],
     providers: [AppService],

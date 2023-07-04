@@ -33,7 +33,7 @@ export class PostController {
     }
 
     @UseGuards(JwtGuard)
-    @Patch(':id')
+    @Patch('/edit/:id')
     editPost(
         @Param('id', ParseIntPipe) postId: number,
         @Body() dto: EditPostDto,

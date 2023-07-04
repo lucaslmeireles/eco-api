@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreatePostDto, EditPostDto } from './dto';
+import { JwtGuard } from 'src/auth/guard';
 
 @Injectable()
 export class PostService {
@@ -29,8 +30,14 @@ export class PostService {
         return post;
     }
 
-    async editPost(postId: number, dto: EditPostDto) {
+    async editPost(postId: number, dto: EditPostDto, userId: number) {
         //TODO apenas o user dono desse post pode edita-lo, @UseGuard + verificação do userId
+        const authorIdPost = await this.prisma.posts.findFirst({
+            where: { authorId: userId },
+        });
+        if (!authorIdPost) {
+            throw new Error('Você não tem permissão para editar esse post');
+        }
         if (!dto.title && !dto.content) {
             throw new Error('Nenhum campo foi preenchido');
         }
