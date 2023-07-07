@@ -35,6 +35,7 @@ model Posts {
     small_text String?
     cover_img  String?
     content    String
+    tags       String[]
     createdAt  DateTime  @default(now())
     updatedAt  DateTime  @updatedAt
     authorId   Int

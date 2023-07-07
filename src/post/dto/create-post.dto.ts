@@ -13,4 +13,7 @@ export class CreatePostDto {
 
     @IsString()
     content: string;
+
+    @IsString()
+    tags: string[];
 }
