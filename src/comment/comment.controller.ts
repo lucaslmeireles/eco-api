@@ -7,23 +7,26 @@ import {
     Patch,
     Post,
     UseGuards,
-    Delete
+    Delete,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import {GetUser} from 'src/auth/decorator';
-import {CreateCommentDto} from './dto';
+import { GetUser } from 'src/auth/decorator';
+import { CreateCommentDto } from './dto';
+import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard)
 @Controller('comment')
 export class CommentController {
     constructor(private CommentService: CommentService) {}
     //Add comment and delete comment
     @Post('/:id')
-    async createComment(@Body() dto: CreateCommentDto, 
-    @GetUser('userId') userId: number, 
-    @Param('id', ParseIntPipe) postId: number ) 
-    // id and post id should be here
+    async createComment(
+        @Body() dto: CreateCommentDto,
+        @GetUser('userId') userId: number,
+        @Param('id', ParseIntPipe) postId: number,
+    ) // id and post id should be here
     {
-        return this.CommentService.createComment(postId, dto, userId)
+        return this.CommentService.createComment(postId, dto, userId);
     }
 
     @Delete('/:id')
