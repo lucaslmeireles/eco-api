@@ -38,7 +38,7 @@ export class PostService {
     async editPost(postId: number, dto: EditPostDto, userId: number) {
         //TODO apenas o user dono desse post pode edita-lo, @UseGuard + verificação do userId
         const authorIdPost = await this.prisma.posts.findFirst({
-            where: {},
+            where: {authorId : userId},
         });
         if (!authorIdPost) {
             throw new Error('Você não tem permissão para editar esse post');
@@ -55,4 +55,12 @@ export class PostService {
             },
         });
     }
+
+    async searchPost(slugPost: string) {
+        //verificação se a pesquisa existe, e famoso contains
+        return await this.prisma.posts.findmany({
+            where: {
+                title: slugPost
+            }
+    })
 }
