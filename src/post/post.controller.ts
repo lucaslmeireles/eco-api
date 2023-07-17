@@ -41,4 +41,9 @@ export class PostController {
     ) {
         return this.PostService.editPost(postId, dto, userId);
     }
+
+    @Get('/search/:slug')
+    searchPost(@Param('slug') postSlug: string) {
+        return this.PostService.searchPost(postSlug);
+    }
 }
