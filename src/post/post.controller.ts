@@ -42,8 +42,13 @@ export class PostController {
         return this.PostService.editPost(postId, dto, userId);
     }
 
-    @Get('/search/:slug')
+    @Post('/search/:slug')
     searchPost(@Param('slug') postSlug: string) {
         return this.PostService.searchPost(postSlug);
+    }
+    @UseGuards(JwtGuard)
+    @Get('/myposts')
+    getPostByAuthor(@GetUser('id') userId: number) {
+        return this.PostService.listPostByAuthor(userId);
     }
 }

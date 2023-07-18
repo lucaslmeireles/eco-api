@@ -1,7 +1,6 @@
 import {
     Body,
     Controller,
-    Get,
     Param,
     ParseIntPipe,
     Patch,
@@ -23,14 +22,16 @@ export class CommentController {
     async createComment(
         @Body() dto: CreateCommentDto,
         @GetUser('userId') userId: number,
-        @Param('id', ParseIntPipe) postId: number,
-    ) // id and post id should be here
-    {
+        @Param('id', ParseIntPipe) postId: number, // id and post id should be here
+    ) {
         return this.CommentService.createComment(postId, dto, userId);
     }
 
     @Delete('/:id')
-    async deleteComment(@Param('id', ParseIntPipe) commentId: number) {
-        return this.CommentService.deleteComment(commentId);
+    async deleteComment(
+        @Param('id', ParseIntPipe) commentId: number,
+        @GetUser('id') userId: number,
+    ) {
+        return this.CommentService.deleteComment(commentId, userId);
     }
 }

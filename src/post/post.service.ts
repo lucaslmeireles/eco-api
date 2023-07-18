@@ -2,6 +2,7 @@ import { Injectable, UseGuards } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreatePostDto, EditPostDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
+import { error } from 'console';
 
 @Injectable()
 export class PostService {
@@ -38,7 +39,7 @@ export class PostService {
     async editPost(postId: number, dto: EditPostDto, userId: number) {
         //TODO apenas o user dono desse post pode edita-lo, @UseGuard + verificação do userId
         const authorIdPost = await this.prisma.posts.findFirst({
-            where: {authorId : userId},
+            where: { authorId: userId },
         });
         if (!authorIdPost) {
             throw new Error('Você não tem permissão para editar esse post');
@@ -58,9 +59,43 @@ export class PostService {
 
     async searchPost(slugPost: string) {
         //verificação se a pesquisa existe, e famoso contains
-        return await this.prisma.posts.findmany({
+        if (!slugPost) {
+            throw new Error('O campo de pesquisa nao pode estar vazio');
+        }
+        return await this.prisma.posts.findMany({
             where: {
-                title: slugPost
-            }
-    })
+                OR: [
+                    {
+                        title: {
+                            contains: slugPost,
+                            mode: 'insensitive',
+                        },
+                    },
+                    {
+                        author: {
+                            firstName: slugPost,
+                        },
+                    },
+                    {
+                        small_text: {
+                            contains: slugPost,
+                            mode: 'insensitive',
+                        },
+                    },
+                ],
+            },
+        });
+    }
+
+    async listPostByAuthor(userId: number) {
+        if (!userId) {
+            throw new Error('Seu usuario nao é valido');
+        }
+        const posts = await this.prisma.posts.findMany({
+            where: {
+                authorId: userId,
+            },
+        });
+        return { posts };
+    }
 }

@@ -17,7 +17,7 @@ export class CommentService {
         });
     }
     @UseGuards(JwtGuard)
-    async deleteComment(commentId: number) {
+    async deleteComment(commentId: number, userId: number) {
         return await this.prisma.comment.delete({
             where: {
                 id: commentId,
