@@ -6,6 +6,7 @@ import {
     ParseIntPipe,
     Patch,
     Post,
+    Query,
     UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
@@ -22,10 +23,6 @@ export class PostController {
         return this.PostService.listPosts();
     }
 
-    @Get(':id')
-    listOnePost(@Param('id', ParseIntPipe) postId: number) {
-        return this.PostService.listPostById(postId);
-    }
     @UseGuards(JwtGuard)
     @Post('/create')
     createPost(@Body() dto: CreatePostDto, @GetUser('id') userId: number) {
@@ -42,13 +39,19 @@ export class PostController {
         return this.PostService.editPost(postId, dto, userId);
     }
 
-    @Post('/search/:slug')
-    searchPost(@Param('slug') postSlug: string) {
+    @Get('/search')
+    searchPost(@Query('q') postSlug: string) {
         return this.PostService.searchPost(postSlug);
     }
+
     @UseGuards(JwtGuard)
     @Get('/myposts')
     getPostByAuthor(@GetUser('id') userId: number) {
         return this.PostService.listPostByAuthor(userId);
+    }
+
+    @Get(':id')
+    listOnePost(@Param('id', ParseIntPipe) postId: number) {
+        return this.PostService.listPostById(postId);
     }
 }
