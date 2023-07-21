@@ -18,11 +18,6 @@ import { JwtGuard } from 'src/auth/guard';
 export class PostController {
     constructor(private PostService: PostService) {}
 
-    @Get('')
-    async listPosts() {
-        return this.PostService.listPosts();
-    }
-
     @UseGuards(JwtGuard)
     @Post('/create')
     createPost(@Body() dto: CreatePostDto, @GetUser('id') userId: number) {
@@ -53,5 +48,10 @@ export class PostController {
     @Get(':id')
     listOnePost(@Param('id', ParseIntPipe) postId: number) {
         return this.PostService.listPostById(postId);
+    }
+
+    @Get('')
+    async listPosts() {
+        return this.PostService.listPosts();
     }
 }
