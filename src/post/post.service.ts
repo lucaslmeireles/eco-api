@@ -35,11 +35,11 @@ export class PostService {
         });
         return post;
     }
-    @UseGuards(JwtGuard)
+
     async editPost(postId: number, dto: EditPostDto, userId: number) {
         //TODO apenas o user dono desse post pode edita-lo, @UseGuard + verificação do userId
         const authorIdPost = await this.prisma.posts.findFirst({
-            where: { authorId: userId },
+            where: { authorId: userId, AND : {id: postId} }
         });
         if (!authorIdPost) {
             throw new Error('Você não tem permissão para editar esse post');
@@ -56,7 +56,20 @@ export class PostService {
             },
         });
     }
-
+    async likePost(postId: number, userId: number) {
+        return this.prisma.posts.update({
+            where: {
+                id: postId,
+            },
+            data: {
+                likedBy: {
+                    connect: {
+                        id: userId,
+                    },
+                },
+            },
+        });
+    }
     async searchPost(slugPost: string) {
         //verificação se a pesquisa existe, e famoso contains
         if (!slugPost) {

@@ -10,18 +10,18 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  createAt  DateTime  @default(now())
-  updateAt  DateTime  @updatedAt
-  email     String    @unique
-  hash      String
-  firstName String?
-  lastName  String?
-  Comment   Comment[]
-  posts     Posts[]   @relation("author")
-  bio       String?
-  avatar    String?
-  myLikedPosts   Posts[]   @relation("likedBy")
+  id           Int       @id @default(autoincrement())
+  createAt     DateTime  @default(now())
+  updateAt     DateTime  @updatedAt
+  email        String    @unique
+  hash         String
+  firstName    String?
+  lastName     String?
+  Comment      Comment[]
+  posts        Posts[]   @relation("author")
+  bio          String?
+  avatar       String?
+  myLikedPosts Posts[]
 }
 
 //Talvez criar categorias
@@ -36,8 +36,7 @@ model Posts {
   authorId   Int
   tags       String[]
   Comment    Comment[]
-  likedById  Int?
-  likedBy    User?     @relation("likedBy", fields: [likedById], references: [id], onDelete: Cascade)
+  likedBy    User[]
   author     User      @relation("author", fields: [authorId], references: [id], onDelete: Cascade)
 }
 
