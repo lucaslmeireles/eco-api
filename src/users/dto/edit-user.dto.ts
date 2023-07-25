@@ -12,4 +12,12 @@ export class EditUserDto {
     @IsString()
     @IsOptional()
     lastName?: string;
+
+    @IsString()
+    @IsOptional()
+    bio?: string;
+
+    @IsString()
+    @IsOptional()
+    avatar?: string;
 }

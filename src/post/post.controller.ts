@@ -45,7 +45,7 @@ export class PostController {
         return this.PostService.listPostByAuthor(userId);
     }
 
-    @Get(':id')
+    @Get('/:id')
     listOnePost(@Param('id', ParseIntPipe) postId: number) {
         return this.PostService.listPostById(postId);
     }
