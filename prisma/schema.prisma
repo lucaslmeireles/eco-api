@@ -23,6 +23,7 @@ model User {
   @@map("users")
 }
 //Talvez criar categorias
+//adicionar bio e avatar
 model Posts {
   id         Int       @id @default(autoincrement())
   title      String
