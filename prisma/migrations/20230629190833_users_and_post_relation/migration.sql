@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE "Posts" ADD COLUMN     "userId" INTEGER NOT NULL DEFAULT 1;
-
--- AddForeignKey
-ALTER TABLE "Posts" ADD CONSTRAINT "Posts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

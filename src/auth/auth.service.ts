@@ -2,7 +2,7 @@ import { Injectable, HttpCode } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
 import * as argon from 'argon2';
 import { AuthDto } from './dto';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { JwtService } from '@nestjs/jwt/dist';
 import { ConfigService } from '@nestjs/config/dist/config.service';

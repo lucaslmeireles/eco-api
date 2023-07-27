@@ -38,7 +38,10 @@ export class PostController {
 
     @UseGuards(JwtGuard)
     @Get('/like/:id')
-    likePost(@Param('id', ParseIntPipe) postId: number, @GetUser('id') userId: number) {
+    likePost(
+        @Param('id', ParseIntPipe) postId: number,
+        @GetUser('id') userId: number,
+    ) {
         return this.PostService.likePost(postId, userId);
     }
 
