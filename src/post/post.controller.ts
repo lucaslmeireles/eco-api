@@ -56,6 +56,11 @@ export class PostController {
         return this.PostService.listPostByAuthor(userId);
     }
 
+    @Get('/hmlikes/:id')
+    getHowManyLikes(@Param('id', ParseIntPipe) postId: number) {
+        return this.PostService.howManyLikes(postId);
+    }
+
     @Get('/:id')
     listOnePost(@Param('id', ParseIntPipe) postId: number) {
         return this.PostService.listPostById(postId);

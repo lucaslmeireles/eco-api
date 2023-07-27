@@ -1,4 +1,11 @@
-import { Controller, Get, UseGuards, Patch, Body } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    UseGuards,
+    Patch,
+    Body,
+    Delete,
+} from '@nestjs/common';
 import { User } from '@prisma/client';
 import { GetUser } from '../auth/decorator/index';
 import { JwtGuard } from '../auth/guard/index';
@@ -16,5 +23,10 @@ export class UsersController {
     @Patch()
     editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
         return this.userService.editUser(userId, dto);
+    }
+
+    @Delete('/delete/myaccount')
+    deleteMyAccount(@GetUser('id') userId: number) {
+        return this.userService.deleteMyAccount(userId);
     }
 }

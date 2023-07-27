@@ -17,4 +17,11 @@ export class UsersService {
         delete user.hash;
         return user;
     }
+
+    async deleteMyAccount(userId: number) {
+        const user = await this.prisma.user.delete({
+            where: { id: userId },
+        });
+        return user;
+    }
 }

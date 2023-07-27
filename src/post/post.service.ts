@@ -26,10 +26,22 @@ export class PostService {
     @UseGuards(JwtGuard)
     async createPost(dto: CreatePostDto, userId: number) {
         //TODO apenas o user aunteticado pode criar um post, @UseGuard aqui
+        console.log(dto);
         const post = await this.prisma.posts.create({
             data: {
                 authorId: userId,
-                ...dto,
+                content: dto.content,
+                cover_img: dto.cover_img,
+                small_text: dto.small_text,
+                title: dto.title,
+                tags: {
+                    connectOrCreate: dto.tags.map((tag) => {
+                        return {
+                            where: { name: tag },
+                            create: { name: tag },
+                        };
+                    }),
+                },
             },
         });
         return post;
@@ -94,6 +106,13 @@ export class PostService {
                             mode: 'insensitive',
                         },
                     },
+                    {
+                        tags: {
+                            some: {
+                                name: slugPost,
+                            },
+                        },
+                    },
                 ],
             },
         });
@@ -109,5 +128,20 @@ export class PostService {
             },
         });
         return { posts };
+    }
+
+    async howManyLikes(postId: number) {
+        return await this.prisma.posts.findFirst({
+            where: {
+                id: postId,
+            },
+            select: {
+                _count: {
+                    select: {
+                        likedBy: true,
+                    },
+                },
+            },
+        });
     }
 }
