@@ -17,8 +17,27 @@ export class PostService {
                 id: postId,
             },
             include: {
-                author: true,
-                Comment: true,
+                author: {
+                    select: {
+                        avatar: true,
+                        firstName: true,
+                        lastName: true,
+                        email: true,
+                        id: true,
+                    },
+                },
+                Comment: {
+                    select: {
+                        content: true,
+                        createdAt: true,
+                        user: {
+                            select: {
+                                avatar: true,
+                                firstName: true,
+                            },
+                        },
+                    },
+                },
             },
         });
         return { data: post };
