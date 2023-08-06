@@ -61,6 +61,11 @@ export class PostController {
         return this.PostService.howManyLikes(postId);
     }
 
+    @Get('/featured')
+    listFeaturedPosts() {
+        return this.PostService.listFeaturedPosts();
+    }
+
     @Get('/:id')
     listOnePost(@Param('id', ParseIntPipe) postId: number) {
         return this.PostService.listPostById(postId);

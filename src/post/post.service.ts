@@ -8,9 +8,50 @@ export class PostService {
     constructor(private prisma: DatabaseService) {}
 
     async listPosts() {
-        const posts = this.prisma.posts.findMany();
+        const posts = this.prisma.tag.findMany({
+            include: {
+                posts: {
+                    select: {
+                        title: true,
+                        small_text: true,
+                        cover_img: true,
+                        id: true,
+                    },
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                },
+            },
+        });
         return posts;
     }
+    async listFeaturedPosts() {
+        const posts = this.prisma.tag.findMany({
+            where: {
+                AND: [
+                    { OR: [{ name: 'recomendado' }] },
+                    { OR: [{ name: 'popular' }] },
+                    { OR: [{ name: 'destaque' }] },
+                ],
+            },
+            include: {
+                posts: {
+                    select: {
+                        title: true,
+                        small_text: true,
+                        cover_img: true,
+                        id: true,
+                    },
+                    orderBy: {
+                        createdAt: 'desc',
+                    },
+                },
+            },
+        });
+
+        return posts;
+    }
+
     async listPostById(postId: number) {
         const post = await this.prisma.posts.findFirst({
             where: {
