@@ -1,61 +1,47 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider          = "postgresql"
-    url               = env("POSTGRES_PRISMA_URL")
-    directUrl         = env("POSTGRES_URL_NON_POOLING")
-    shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+  provider          = "postgresql"
+  url               = env("POSTGRES_PRISMA_URL")
+  directUrl         = env("POSTGRES_URL_NON_POOLING")
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
-    id           Int       @id @default(autoincrement())
-    createAt     DateTime  @default(now())
-    updateAt     DateTime  @updatedAt
-    email        String    @unique
-    hash         String
-    firstName    String?
-    lastName     String?
-    Comment      Comment[]
-    posts        Posts[]   @relation("author")
-    bio          String?
-    avatar       String?
-    myLikedPosts Posts[]
+  id           Int      @id @default(autoincrement())
+  createAt     DateTime @default(now())
+  updateAt     DateTime @updatedAt
+  email        String   @unique
+  hash         String
+  firstName    String?
+  lastName     String?
+  bio          String?
+  avatar       String?
+  posts        Posts[]  @relation("author")
+  myLikedPosts Posts[]  @relation("PostsToUser")
 }
 
-//Talvez criar categorias
-//adicionar bio e avatar
 model Posts {
-    id         Int       @id @default(autoincrement())
-    title      String
-    small_text String?
-    cover_img  String?
-    content    String
-    createdAt  DateTime  @default(now())
-    updatedAt  DateTime  @updatedAt
-    authorId   Int
-    tags       Tag[]
-    Comment    Comment[]
-    likedBy    User[]
-    author     User      @relation("author", fields: [authorId], references: [id], onDelete: Cascade)
-}
-
-model Comment {
-    id        Int      @id @default(autoincrement())
-    content   String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    postId    Int
-    userId    Int
-    post      Posts    @relation(fields: [postId], references: [id], onDelete: Cascade)
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         Int      @id @default(autoincrement())
+  title      String
+  small_text String?
+  cover_img  String?
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  authorId   Int
+  status     Boolean  @default(true)
+  author     User     @relation("author", fields: [authorId], references: [id], onDelete: Cascade)
+  tags       Tag[]    @relation("PostsToTag")
+  likedBy    User[]   @relation("PostsToUser")
 }
 
 model Tag {
-    id        Int      @id @default(autoincrement())
-    name      String   @unique
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    posts     Posts[]
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Posts[]  @relation("PostsToTag")
 }

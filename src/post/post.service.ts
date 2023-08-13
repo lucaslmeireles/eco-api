@@ -79,6 +79,11 @@ export class PostService {
                         },
                     },
                 },
+                tags: {
+                    select: {
+                        name: true,
+                    },
+                },
             },
         });
         return { data: post };

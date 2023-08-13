@@ -23,20 +23,9 @@ CREATE TABLE "Posts" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "authorId" INTEGER NOT NULL,
+    "status" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "Posts_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Comment" (
-    "id" SERIAL NOT NULL,
-    "content" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "postId" INTEGER NOT NULL,
-    "userId" INTEGER NOT NULL,
-
-    CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -81,12 +70,6 @@ CREATE INDEX "_PostsToUser_B_index" ON "_PostsToUser"("B");
 
 -- AddForeignKey
 ALTER TABLE "Posts" ADD CONSTRAINT "Posts_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Posts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_PostsToTag" ADD CONSTRAINT "_PostsToTag_A_fkey" FOREIGN KEY ("A") REFERENCES "Posts"("id") ON DELETE CASCADE ON UPDATE CASCADE;

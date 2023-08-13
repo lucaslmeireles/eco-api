@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
+import { TagsModule } from './tags/tags.module';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { CommentModule } from './comment/comment.module';
         ConfigModule.forRoot({ isGlobal: true }),
         PostModule,
         CommentModule,
+        TagsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

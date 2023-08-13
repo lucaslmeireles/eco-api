@@ -1,4 +1,9 @@
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import {
+    IsArray,
+    IsBooleanString,
+    IsOptional,
+    IsString,
+} from 'class-validator';
 
 export class CreatePostDto {
     @IsString()
@@ -16,4 +21,7 @@ export class CreatePostDto {
 
     @IsArray()
     tags: string[];
+
+    @IsBooleanString()
+    status: boolean;
 }

@@ -66,7 +66,7 @@ export class PostController {
         return this.PostService.listFeaturedPosts();
     }
 
-    @Get('/:id')
+    @Get('/view/:id')
     listOnePost(@Param('id', ParseIntPipe) postId: number) {
         return this.PostService.listPostById(postId);
     }
