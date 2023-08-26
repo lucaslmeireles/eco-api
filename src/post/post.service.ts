@@ -29,18 +29,31 @@ export class PostService {
         const posts = this.prisma.tag.findMany({
             where: {
                 AND: [
-                    { OR: [{ name: 'recomendado' }] },
-                    { OR: [{ name: 'popular' }] },
-                    { OR: [{ name: 'destaque' }] },
+                    {
+                        OR: [
+                            { name: 'novidade' },
+                            { name: 'recomendado' },
+                            { name: 'destaque' },
+                            { name: 'popular' },
+                        ],
+                    },
                 ],
             },
             include: {
                 posts: {
+                    where: {
+                        status: true,
+                    },
                     select: {
                         title: true,
                         small_text: true,
                         cover_img: true,
                         id: true,
+                        _count: {
+                            select: {
+                                likedBy: true,
+                            },
+                        },
                     },
                     orderBy: {
                         createdAt: 'desc',
@@ -67,18 +80,7 @@ export class PostService {
                         id: true,
                     },
                 },
-                Comment: {
-                    select: {
-                        content: true,
-                        createdAt: true,
-                        user: {
-                            select: {
-                                avatar: true,
-                                firstName: true,
-                            },
-                        },
-                    },
-                },
+
                 tags: {
                     select: {
                         name: true,
@@ -146,6 +148,20 @@ export class PostService {
             },
         });
     }
+    async deslikePost(postId: number, userId: number) {
+        return this.prisma.posts.update({
+            where: {
+                id: postId,
+            },
+            data: {
+                likedBy: {
+                    disconnect: {
+                        id: userId,
+                    },
+                },
+            },
+        });
+    }
     async searchPost(slugPost: string) {
         //verificação se a pesquisa existe, e famoso contains
         if (!slugPost) {
@@ -179,33 +195,6 @@ export class PostService {
                         },
                     },
                 ],
-            },
-        });
-    }
-
-    async listPostByAuthor(userId: number) {
-        if (!userId) {
-            throw new Error('Seu usuario nao é valido');
-        }
-        const posts = await this.prisma.posts.findMany({
-            where: {
-                authorId: userId,
-            },
-        });
-        return { posts };
-    }
-
-    async howManyLikes(postId: number) {
-        return await this.prisma.posts.findFirst({
-            where: {
-                id: postId,
-            },
-            select: {
-                _count: {
-                    select: {
-                        likedBy: true,
-                    },
-                },
             },
         });
     }

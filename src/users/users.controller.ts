@@ -29,4 +29,9 @@ export class UsersController {
     deleteMyAccount(@GetUser('id') userId: number) {
         return this.userService.deleteMyAccount(userId);
     }
+
+    @Get('/myposts')
+    getPostByAuthor(@GetUser('id') userId: number) {
+        return this.userService.listPostByAuthor(userId);
+    }
 }

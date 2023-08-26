@@ -37,7 +37,7 @@ export class PostController {
     }
 
     @UseGuards(JwtGuard)
-    @Get('/like/:id')
+    @Post('/like/:id')
     likePost(
         @Param('id', ParseIntPipe) postId: number,
         @GetUser('id') userId: number,
@@ -45,20 +45,18 @@ export class PostController {
         return this.PostService.likePost(postId, userId);
     }
 
+    @UseGuards(JwtGuard)
+    @Post('/deslike/:id')
+    deslikePost(
+        @Param('id', ParseIntPipe) postId: number,
+        @GetUser('id') userId: number,
+    ) {
+        return this.PostService.deslikePost(postId, userId);
+    }
+
     @Get('/search')
     searchPost(@Query('q') postSlug: string) {
         return this.PostService.searchPost(postSlug);
-    }
-
-    @UseGuards(JwtGuard)
-    @Get('/myposts')
-    getPostByAuthor(@GetUser('id') userId: number) {
-        return this.PostService.listPostByAuthor(userId);
-    }
-
-    @Get('/hmlikes/:id')
-    getHowManyLikes(@Param('id', ParseIntPipe) postId: number) {
-        return this.PostService.howManyLikes(postId);
     }
 
     @Get('/featured')

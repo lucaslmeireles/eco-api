@@ -82,3 +82,4 @@ ALTER TABLE "_PostsToUser" ADD CONSTRAINT "_PostsToUser_A_fkey" FOREIGN KEY ("A"
 
 -- AddForeignKey
 ALTER TABLE "_PostsToUser" ADD CONSTRAINT "_PostsToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+

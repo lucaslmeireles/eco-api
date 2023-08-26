@@ -61,7 +61,7 @@ export class AuthService {
         };
         const JWT_SECRET = this.config.get('JWT_SECRET');
         const token = this.jwt.sign(payload, {
-            expiresIn: '15m',
+            expiresIn: '1h',
             secret: JWT_SECRET,
         });
 

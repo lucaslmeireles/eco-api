@@ -24,4 +24,42 @@ export class UsersService {
         });
         return user;
     }
+
+    async listPostByAuthor(userId: number) {
+        if (!userId) {
+            throw new Error('Seu usuario nao é valido');
+        }
+        const posts = await this.prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+            select: {
+                posts: {
+                    select: {
+                        title: true,
+                        small_text: true,
+                        cover_img: true,
+                        id: true,
+                        status: true,
+                    },
+                },
+            },
+        });
+        const likedposts = await this.prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+            select: {
+                myLikedPosts: {
+                    select: {
+                        title: true,
+                        small_text: true,
+                        cover_img: true,
+                        id: true,
+                    },
+                },
+            },
+        });
+        return { myposts: posts.posts, likedposts: likedposts.myLikedPosts };
+    }
 }
