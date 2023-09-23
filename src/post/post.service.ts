@@ -1,4 +1,4 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { HttpCode, Injectable, UseGuards } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreatePostDto, EditPostDto } from './dto';
 import { JwtGuard } from 'src/auth/guard';
@@ -111,7 +111,24 @@ export class PostService {
                 },
             },
         });
+
         return post;
+    }
+
+    async deletePost(postId: number, userId: number) {
+        const authorIdPost = await this.prisma.posts.findFirst({
+            where: { authorId: userId, AND: { id: postId } },
+        });
+        if (!authorIdPost) {
+            throw new Error(
+                'Você não tem permissão para deletar esse post esse post',
+            );
+        }
+        return await this.prisma.posts.delete({
+            where: {
+                id: postId,
+            },
+        });
     }
 
     async editPost(postId: number, dto: EditPostDto, userId: number) {
@@ -169,6 +186,7 @@ export class PostService {
         }
         return await this.prisma.posts.findMany({
             where: {
+                status: true,
                 OR: [
                     {
                         title: {
