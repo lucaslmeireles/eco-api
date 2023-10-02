@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { TagsModule } from './tags/tags.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
     imports: [

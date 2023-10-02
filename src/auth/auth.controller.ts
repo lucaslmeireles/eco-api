@@ -1,6 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
+import { GoogleOAuthGuard } from './guard';
 
 //Entender como usar o google aqui
 
@@ -15,5 +16,14 @@ export class AuthController {
     @Post('signup')
     signup(@Body() dto: AuthDto) {
         return this.AuthService.signup(dto);
+    }
+    @Get('signin/google')
+    @UseGuards(GoogleOAuthGuard)
+    async googleAuth(@Request() req) {}
+  
+    @Get('google-redirect')
+    @UseGuards(GoogleOAuthGuard)
+    googleAuthRedirect(@Request() req) {
+      return this.AuthService.googleLogin(req);
     }
 }
