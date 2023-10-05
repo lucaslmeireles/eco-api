@@ -6,6 +6,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { JwtService } from '@nestjs/jwt/dist';
 import { ConfigService } from '@nestjs/config/dist/config.service';
+import { retryWhen } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -73,7 +74,13 @@ export class AuthService {
         if (!req.user) {
           return 'No user from google';
         }
-    
+        if (req.user.email) {
+            const user = await this.prisma.user.findUnique({
+                where: {
+                    email: req.user.email,
+                },
+            });
+        }
         return {
           message: 'User information from google',
           user: req.user,
