@@ -7,6 +7,7 @@ import {
     ParseIntPipe,
     Patch,
     Post,
+    Put,
     Query,
     UseGuards,
 } from '@nestjs/common';
@@ -28,7 +29,7 @@ export class PostController {
     }
 
     @UseGuards(JwtGuard)
-    @Patch('/edit/:id')
+    @Put('/edit/:id')
     editPost(
         @Param('id', ParseIntPipe) postId: number,
         @Body() dto: EditPostDto,

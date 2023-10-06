@@ -90,7 +90,6 @@ export class PostService {
         });
         return { data: post };
     }
-    @UseGuards(JwtGuard)
     async createPost(dto: CreatePostDto, userId: number) {
         //TODO apenas o user aunteticado pode criar um post, @UseGuard aqui
         console.log(dto);
@@ -130,7 +129,6 @@ export class PostService {
             },
         });
     }
-
     async editPost(postId: number, dto: EditPostDto, userId: number) {
         //TODO apenas o user dono desse post pode edita-lo, @UseGuard + verificação do userId
         const authorIdPost = await this.prisma.posts.findFirst({
