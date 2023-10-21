@@ -13,6 +13,7 @@ import { PostService } from './post.service';
 import { CreatePostDto, EditPostDto } from './dto';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
+import { AuthGuard } from '@nestjs/passport';
 
 //rota DELETE /post/delete/:id
 
@@ -45,7 +46,7 @@ export class PostController {
         return this.PostService.likePost(postId, userId);
     }
 
-    @UseGuards(JwtGuard)
+    @UseGuards(AuthGuard(['jwt', 'google-passport']))
     @Post('/deslike/:id')
     deslikePost(
         @Param('id', ParseIntPipe) postId: number,

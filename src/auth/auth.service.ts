@@ -70,20 +70,13 @@ export class AuthService {
             access_token: token,
         };
     }
-    googleLogin(req) {
+    async googleLogin(req) {
         if (!req.user) {
-          return 'No user from google';
-        }
-        if (req.user.email) {
-            const user = await this.prisma.user.findUnique({
-                where: {
-                    email: req.user.email,
-                },
-            });
+            return 'No user from google';
         }
         return {
-          message: 'User information from google',
-          user: req.user,
+            message: 'User information from google',
+            user: req.user,
         };
-}
+    }
 }
